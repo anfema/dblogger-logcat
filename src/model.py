@@ -10,6 +10,26 @@ tag_log_assoc_table = Table(tablePrefix + '_log_tag', Model.metadata,
     Column('tagID', Integer, ForeignKey(tablePrefix + '_tag.id'))
 )
 
+
+class Logger(Model):
+	__tablename__ = tablePrefix + '_logger'
+
+	id = Column(Integer, primary_key=True)
+	name = Column(String(length=255))
+	logs = relationship('Log', back_populates='logger')
+
+
+class Host(Model):
+	__tablename__ = tablePrefix + '_hosts'
+
+	id = Column(Integer, primary_key=True)
+	name = Column(String(length=255))
+	logs = relationship('Log', back_populates='hostname')
+
+	def __repr__(self):
+		return "<Host(name='{}'>".format(self.name)
+
+
 class Tag(Model):
 	__tablename__ = tablePrefix + '_tag'
 
@@ -50,14 +70,16 @@ class Log(Model):
 	__tablename__ = tablePrefix + '_log'
 
 	id = Column(Integer, primary_key=True)
-	name = Column(String(length=255))
-	hostname = Column(String(length=255))
 	pid = Column(Integer)
 	time = Column(Integer)
 	level = Column(Integer)
 	message = Column(Text)
 	content = Column(Text)
-	functionID = Column(Integer, ForeignKey(tablePrefix +'_function.id'))
+	loggerID = Column(Integer, ForeignKey(tablePrefix + '_logger.id'))
+	logger = relationship('Logger', back_populates='logs')
+	hostnameID = Column(Integer, ForeignKey(tablePrefix + '_hosts.id'))
+	hostname = relationship('Host', back_populates='logs')
+	functionID = Column(Integer, ForeignKey(tablePrefix + '_function.id'))
 	function = relationship('Func', back_populates='logs')
 	tags = relationship('Tag', secondary=tag_log_assoc_table, back_populates='logs')
 
