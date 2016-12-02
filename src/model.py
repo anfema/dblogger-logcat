@@ -74,7 +74,6 @@ class Log(Model):
 	time = Column(Integer)
 	level = Column(Integer)
 	message = Column(Text)
-	content = Column(Text)
 	loggerID = Column(Integer, ForeignKey(tablePrefix + '_logger.id'))
 	logger = relationship('Logger', back_populates='logs')
 	hostnameID = Column(Integer, ForeignKey(tablePrefix + '_hosts.id'))
