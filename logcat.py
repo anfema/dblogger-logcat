@@ -49,11 +49,14 @@ def output_log(q, limit=None):
 		for tag in log.tags:
 			tags.append(tag.name)
 		maxTime = log.time
-		print('{time:%Y-%m-%dT%H:%M:%S} [{level}]{tags}: {msg}'.format(
+		prefix = '{time:%Y-%m-%dT%H:%M:%S} [{level}]{tags}: '.format(
 			time=datetime.datetime.fromtimestamp(log.time),
 			level=int_to_level[log.level],
-			msg=log.message,
 			tags=(' ' + (', '.join(tags))) if len(tags) > 0 else ''
+		) 
+		print('{prefix}{msg}'.format(
+			prefix=prefix,
+			msg=log.message.replace('\n', '\n' + len(prefix) * ' ')
 		))
 
 	return maxTime
