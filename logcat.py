@@ -50,7 +50,7 @@ def output_log(q, limit=None):
 			tags.append(tag.name)
 		maxTime = log.time
 		print('{time:%Y-%m-%dT%H:%M:%S} [{level}]{tags}: {msg}'.format(
-			time=datetime.datetime.fromtimestamp(log.time / 1000.0),
+			time=datetime.datetime.fromtimestamp(log.time),
 			level=int_to_level[log.level],
 			msg=log.message,
 			tags=(' ' + (', '.join(tags))) if len(tags) > 0 else ''
